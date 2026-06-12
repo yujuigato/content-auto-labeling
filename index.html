@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>內容自動標籤系統｜AI Content Auto-Labeling</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    :root{--primary:#0891b2;--primary-light:#ecfeff;--accent:#7c3aed;--success:#059669;--warning:#d97706;--danger:#dc2626;--bg:#f8fafc;--card:#ffffff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;}
+    header{background:linear-gradient(135deg,#0e7490 0%,#0891b2 50%,#7c3aed 100%);color:white;padding:72px 40px 56px;text-align:center;position:relative;overflow:hidden;}
+    header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
+    .hero-tag{display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:5px 16px;font-size:.85rem;letter-spacing:.05em;margin-bottom:16px;}
+    header h1{font-size:2.4rem;font-weight:800;margin-bottom:16px;line-height:1.2;}
+    header h1 span{color:#a5f3fc;}
+    header .subtitle{font-size:1.1rem;opacity:.85;max-width:640px;margin:0 auto 28px;}
+    .tech-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:32px;}
+    .tech-pill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:6px 16px;font-size:.85rem;font-weight:500;}
+    .hero-stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;padding-top:24px;border-top:1px solid rgba(255,255,255,0.2);}
+    .hero-stat .num{font-size:2rem;font-weight:800;}
+    .hero-stat .lbl{font-size:.8rem;opacity:.75;margin-top:2px;}
+    main{max-width:960px;margin:0 auto;padding:48px 24px;}
+    section{margin-bottom:56px;}
+    .section-label{font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);margin-bottom:8px;}
+    h2{font-size:1.65rem;font-weight:800;color:var(--text);margin-bottom:8px;}
+    .section-desc{font-size:1rem;color:var(--text-muted);margin-bottom:24px;max-width:680px;}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+    .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+    .problem-card{border-left:4px solid var(--danger);background:#fff5f5;}
+    .solution-card{border-left:4px solid var(--success);background:#f0fdf4;}
+    .problem-card h3{color:var(--danger);}
+    .solution-card h3{color:var(--success);}
+    h3{font-size:1.05rem;font-weight:700;margin:20px 0 8px;}
+    .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;}
+    .stat-card{background:var(--primary-light);border-radius:12px;padding:20px;text-align:center;}
+    .stat-card .number{font-size:2rem;font-weight:800;color:var(--primary);}
+    .stat-card .label{font-size:.82rem;color:var(--text-muted);margin-top:4px;}
+    .mermaid{background:white;border-radius:10px;padding:20px;margin:12px 0;overflow-x:auto;}
+    table{width:100%;border-collapse:collapse;font-size:.92rem;}
+    th{background:#f1f5f9;padding:10px 14px;text-align:left;font-weight:600;border-bottom:2px solid var(--border);}
+    td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;}
+    tr:last-child td{border-bottom:none;}
+    tr:hover td{background:#f8fafc;}
+    .tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.8rem;font-weight:600;}
+    .tag-cyan{background:#cffafe;color:#164e63;}
+    .tag-purple{background:#ede9fe;color:#5b21b6;}
+    .tag-green{background:#dcfce7;color:#166534;}
+    .tag-amber{background:#fef3c7;color:#92400e;}
+    .label-tree{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+    .label-level{display:flex;align-items:center;gap:10px;}
+    .level-badge{font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:10px;min-width:50px;text-align:center;}
+    .level-1{background:#0891b2;color:white;}
+    .level-2{background:#0e7490;color:white;}
+    .level-3{background:#164e63;color:white;}
+    .tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+    .tech-item{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+    .tech-icon{font-size:1.5rem;flex-shrink:0;}
+    .tech-name{font-weight:700;font-size:.9rem;}
+    .tech-desc{font-size:.8rem;color:var(--text-muted);}
+    .hybrid-box{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin:16px 0;}
+    .hybrid-side{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;}
+    .hybrid-side h4{font-size:.9rem;font-weight:700;margin-bottom:6px;}
+    .hybrid-side p{font-size:.82rem;color:var(--text-muted);}
+    .hybrid-arrow{font-size:1.5rem;color:var(--text-muted);text-align:center;}
+    .hybrid-result{background:var(--primary-light);border:2px solid var(--primary);border-radius:10px;padding:16px;text-align:center;}
+    .hybrid-result h4{font-size:.9rem;font-weight:700;color:var(--primary);}
+    footer{text-align:center;padding:40px 24px;color:var(--text-muted);font-size:.85rem;border-top:1px solid var(--border);}
+    footer a{color:var(--primary);text-decoration:none;}
+  </style>
+</head>
+<body>
+<header>
+  <div class="hero-tag">🏷️ LLM × FastAPI × 混合式標籤</div>
+  <h1>內容自動標籤系統<br><span>AI Content Auto-Labeling</span></h1>
+  <p class="subtitle">結合 Gemini LLM 與關鍵字比對，對中文文章自動打上場景、議題、產品三層標籤，並透過 FastAPI 提供即時分類服務</p>
+  <div class="tech-pills">
+    <span class="tech-pill">Python</span>
+    <span class="tech-pill">Gemini 2.0/2.5 Flash</span>
+    <span class="tech-pill">FastAPI</span>
+    <span class="tech-pill">MySQL</span>
+    <span class="tech-pill">BeautifulSoup</span>
+    <span class="tech-pill">SQL Server</span>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">3 層</div><div class="lbl">場景 × 議題 × 產品</div></div>
+    <div class="hero-stat"><div class="num">混合式</div><div class="lbl">LLM + 關鍵字雙引擎</div></div>
+    <div class="hero-stat"><div class="num">即時 API</div><div class="lbl">FastAPI 單篇/批次</div></div>
+    <div class="hero-stat"><div class="num">自動同步</div><div class="lbl">知識庫標籤字典</div></div>
+  </div>
+</header>
+<main>
+
+<section>
+  <div class="section-label">Background</div>
+  <h2>這個系統在解決什麼問題？</h2>
+  <p class="section-desc">內容團隊每天產出大量文章，手動標籤耗時且不一致；業務需要依場景、議題找到對應的知識內容，卻找不到。</p>
+  <div class="card-grid">
+    <div class="card problem-card">
+      <h3>😣 過去的痛點</h3>
+      <ul style="padding-left:18px;font-size:.92rem;color:#374151;margin-top:8px;">
+        <li style="margin-bottom:8px">文章標籤全靠人工，速度慢且標準不統一</li>
+        <li style="margin-bottom:8px">無法快速按「場景」或「議題」篩選相關文章</li>
+        <li style="margin-bottom:8px">標籤體系更新後，舊文章需要重新審閱</li>
+        <li>產品標籤需要比對同義詞，純 LLM 容易出錯</li>
+      </ul>
+    </div>
+    <div class="card solution-card">
+      <h3>✅ 系統如何解決</h3>
+      <ul style="padding-left:18px;font-size:.92rem;color:#374151;margin-top:8px;">
+        <li style="margin-bottom:8px">LLM 判斷場景與議題（語意理解），關鍵字比對產品（精確匹配）</li>
+        <li style="margin-bottom:8px">三層標籤結構（大類 > 小類），搭配同義詞字典</li>
+        <li style="margin-bottom:8px">FastAPI 提供即時 API，單篇或批次皆可</li>
+        <li>標籤結果自動同步至 SQL Server 知識庫</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">Architecture</div>
+  <h2>混合式標籤引擎</h2>
+  <p class="section-desc">LLM 擅長語意理解，關鍵字擅長精確比對，兩者各司其職，互補不足。</p>
+  <div class="card">
+    <div class="mermaid">
+flowchart TD
+    A["📄 文章\n(MySQL)"] --> B["HTML 清洗\nBeautifulSoup"]
+    B --> C["文章內容"]
+    C --> D["🤖 Gemini LLM\n場景 × 議題 判斷"]
+    C --> E["🔑 關鍵字比對\n同義詞字典"]
+    D --> F["場景標籤\n議題標籤"]
+    E --> G["產品標籤"]
+    F & G --> H["三層標籤結果\n場景 × 議題 × 產品"]
+    H --> I["FastAPI 回傳"]
+    H --> J["SQL Server 同步\nTGAJ / TGAK / TGAD"]
+    style D fill:#0891b2,color:#fff
+    style H fill:#059669,color:#fff
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <h3>為什麼是混合式，不是純 LLM？</h3>
+    <p style="font-size:.92rem;color:#374151;margin-top:8px;">
+      產品標籤需要精確比對產品代碼（TT / T100 / CM / WF / SM），LLM 的創意性回答容易引入不存在的標籤。
+      關鍵字比對搭配同義詞字典可以達到 100% 的標籤合法性；場景與議題則需要語意理解，這正是 LLM 的強項。
+      <strong>兩者分工，各取所長。</strong>
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">Label Structure</div>
+  <h2>三層標籤體系</h2>
+  <div class="card">
+    <table>
+      <tr><th>標籤類型</th><th>結構</th><th>判斷方式</th><th>範例</th></tr>
+      <tr>
+        <td><span class="tag tag-cyan">場景</span></td>
+        <td>大類 > 小類</td>
+        <td>Gemini LLM 語意判斷</td>
+        <td>製造業 > 智慧工廠</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-purple">議題</span></td>
+        <td>大類 > 小類</td>
+        <td>Gemini LLM 語意判斷</td>
+        <td>數位轉型 > AI 導入</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-green">產品</span></td>
+        <td>產品代碼</td>
+        <td>關鍵字 + 同義詞字典</td>
+        <td>TT（TeamTalk）/ WF（WorkFlow）</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">API Design</div>
+  <h2>FastAPI 即時分類服務</h2>
+  <div class="card">
+    <table>
+      <tr><th>端點</th><th>功能</th><th>輸入</th><th>輸出</th></tr>
+      <tr><td><code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">POST /label</code></td><td>單篇文章標籤</td><td>文章 HTML / 純文字</td><td>三層標籤 JSON</td></tr>
+      <tr><td><code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">POST /batch</code></td><td>批次標籤</td><td>文章 ID 清單</td><td>批次標籤結果</td></tr>
+      <tr><td><code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">POST /sync</code></td><td>同步知識庫</td><td>標籤結果</td><td>寫入 TGAJ/TGAK/TGAD</td></tr>
+      <tr><td><code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">GET /dict</code></td><td>查詢標籤字典</td><td>—</td><td>當前有效標籤清單</td></tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">Tech Stack</div>
+  <h2>技術選型</h2>
+  <div class="tech-grid">
+    <div class="tech-item"><div class="tech-icon">🤖</div><div><div class="tech-name">Gemini 2.0/2.5 Flash</div><div class="tech-desc">場景與議題語意分類</div></div></div>
+    <div class="tech-item"><div class="tech-icon">⚡</div><div><div class="tech-name">FastAPI</div><div class="tech-desc">非同步 REST API，低延遲</div></div></div>
+    <div class="tech-item"><div class="tech-icon">🍜</div><div><div class="tech-name">BeautifulSoup</div><div class="tech-desc">HTML 清洗，擷取純文字</div></div></div>
+    <div class="tech-item"><div class="tech-icon">🗄️</div><div><div class="tech-name">MySQL + SQL Server</div><div class="tech-desc">文章來源 + 知識庫同步</div></div></div>
+    <div class="tech-item"><div class="tech-icon">📖</div><div><div class="tech-name">同義詞字典</div><div class="tech-desc">Excel 維護，自動載入</div></div></div>
+    <div class="tech-item"><div class="tech-icon">☁️</div><div><div class="tech-name">Vertex AI</div><div class="tech-desc">Gemini API 呼叫平台</div></div></div>
+  </div>
+</section>
+
+</main>
+<footer>
+  <p>內容自動標籤系統 &nbsp;|&nbsp; Built with Python + Gemini AI + FastAPI &nbsp;|&nbsp; <a href="https://github.com/yujuigato/content-auto-labeling">GitHub</a></p>
+  <p style="margin-top:6px;">最後更新：2026-06-12</p>
+</footer>
+<script>mermaid.initialize({startOnLoad:true,theme:'base',themeVariables:{primaryColor:'#cffafe',primaryTextColor:'#164e63',primaryBorderColor:'#67e8f9',lineColor:'#64748b'}});</script>
+</body>
+</html>
