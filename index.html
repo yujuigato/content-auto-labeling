@@ -77,9 +77,9 @@
 </head>
 <body>
 <header>
-  <div class="hero-tag">🏷️ LLM + 關鍵字 × FastAPI × 三層標籤</div>
-  <h1>內容自動標籤系統<br><span>AI Content Auto-Labeling</span></h1>
-  <p class="subtitle">結合 Gemini LLM 語意判斷與關鍵字精確比對，對中文文章自動打上場景、議題、產品三層標籤，並透過 FastAPI 提供即時分類服務</p>
+  <div class="hero-tag">🏷️ LLM × 關鍵字規則 × 多來源整合 × 自動分類</div>
+  <h1>AI 自動標籤系統<br><span>Auto-Labeling Suite</span></h1>
+  <p class="subtitle">兩套互補的自動分類系統：一套為中文文章打上場景/議題/產品三層標籤，一套為企業自動判定產業行業代號，整合四大來源資料</p>
   <div class="tech-pills">
     <span class="tech-pill">Python</span>
     <span class="tech-pill">Gemini 2.0/2.5 Flash</span>
@@ -89,16 +89,24 @@
     <span class="tech-pill">SQL Server</span>
   </div>
   <div class="hero-stats">
-    <div class="hero-stat"><div class="num">3 層</div><div class="lbl">場景 × 議題 × 產品</div></div>
-    <div class="hero-stat"><div class="num">混合式</div><div class="lbl">LLM + 關鍵字雙引擎</div></div>
-    <div class="hero-stat"><div class="num">即時 API</div><div class="lbl">單篇 / 批次皆支援</div></div>
-    <div class="hero-stat"><div class="num">自動同步</div><div class="lbl">標籤結果入知識庫</div></div>
+    <div class="hero-stat"><div class="num">2 套</div><div class="lbl">獨立自動分類系統</div></div>
+    <div class="hero-stat"><div class="num">3 層</div><div class="lbl">文章標籤（場景/議題/產品）</div></div>
+    <div class="hero-stat"><div class="num">4 來源</div><div class="lbl">產行業資料整合</div></div>
+    <div class="hero-stat"><div class="num">規則 + LLM</div><div class="lbl">混合式判斷引擎</div></div>
   </div>
 </header>
 <main>
 
+<div style="background:linear-gradient(135deg,#ecfeff,#f0f9ff);border:1px solid #67e8f9;border-radius:12px;padding:14px 20px;margin-bottom:32px;display:flex;gap:12px;align-items:center;">
+  <span style="font-size:1.4rem;">📋</span>
+  <div>
+    <div style="font-weight:700;font-size:.9rem;color:#0e7490;">系統一：內容自動標籤</div>
+    <div style="font-size:.85rem;color:#64748b;">為中文文章自動打上場景、議題、產品三層標籤，FastAPI 即時服務</div>
+  </div>
+</div>
+
 <section>
-  <div class="section-label">Background</div>
+  <div class="section-label">Background · System 1</div>
   <h2>這個系統在解決什麼問題？</h2>
   <p class="section-desc">內容團隊大量產出文章，但沒有標籤就無法讓業務依場景快速找到對應的知識內容；手動標籤速度慢且標準不一。</p>
   <div class="card-grid">
@@ -266,6 +274,151 @@ flowchart TD
   </div>
 </section>
 
+<div style="border-top:3px solid #0891b2;margin:0 0 48px;position:relative;">
+  <span style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#f8fafc;padding:0 16px;font-size:.8rem;font-weight:700;color:#0891b2;letter-spacing:.1em;text-transform:uppercase;">系統二：法人產行業標籤</span>
+</div>
+
+<section>
+  <div class="section-label">Background · System 2</div>
+  <h2>法人產行業標籤系統在解決什麼問題？</h2>
+  <p class="section-desc">企業資料散落在 104、商業司、工廠登記、財稅等四個政府與商業資料庫，每個來源的行業分類系統都不一樣，無法直接比較或合併。</p>
+  <div class="card-grid">
+    <div class="card problem-card">
+      <h3>😣 過去的痛點</h3>
+      <ul style="padding-left:18px;font-size:.92rem;color:#374151;margin-top:8px;">
+        <li style="margin-bottom:8px">同一家公司，四個來源給的行業代號完全不同，不知道哪個準</li>
+        <li style="margin-bottom:8px">大中小細類層級複雜，人工對照費時且容易出錯</li>
+        <li style="margin-bottom:8px">公司名稱含「製造」卻被分在服務業的錯誤分類持續累積</li>
+        <li>新增法人時需要人工查表判定行業，無法規模化</li>
+      </ul>
+    </div>
+    <div class="card solution-card">
+      <h3>✅ 系統如何解決</h3>
+      <ul style="padding-left:18px;font-size:.92rem;color:#374151;margin-top:8px;">
+        <li style="margin-bottom:8px">整合四大來源，建立統一的行業代號判定流程</li>
+        <li style="margin-bottom:8px">關鍵字規則優先：製造/組裝→C，流通/批發→F，醫院→M8110</li>
+        <li style="margin-bottom:8px">規則覆蓋不到的案例，依來源優先序自動選擇最可信的代號</li>
+        <li>最終回退到語意模型，確保每家公司都有有效的分類</li>
+      </ul>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-top:16px;">
+    <h4>💡 什麼是產行業代號？</h4>
+    <p style="font-size:.92rem;color:#374151;margin-top:6px;">台灣行業標準分類採四層結構：<strong>大類（英文字母）→ 中類（2碼）→ 小類（3碼）→ 細類（4碼）</strong>。例如：<br>
+    C → C10 → C101 → C1011（食品製造業 → 屠宰及肉品加工）<br>
+    業務可依行業代號快速找出同類型客戶，複製成功銷售策略。</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">How It Works · System 2</div>
+  <h2>產行業判定流程</h2>
+  <div class="card" style="margin-bottom:24px;">
+    <div class="mermaid">
+flowchart TD
+    A["104 求才資料\n產品說明/行業"] --> E["資料彙整"]
+    B["商業司\n公司登記行業"] --> E
+    C["工廠登記\n主要產品"] --> E
+    D["財稅資料\n稅務行業碼"] --> E
+    E --> F{"直接命中？\n公司自填 = 行業定義"}
+    F -->|是| K["✅ 直接判定\n不需模型"]
+    F -->|否| G{"關鍵字規則"}
+    G -->|製造/組裝/研發| H["C 製造業"]
+    G -->|批發/零售/貿易| I["F 批發零售業"]
+    G -->|醫院/診所/長照| J["M 醫療保健"]
+    G -->|無法判定| L["來源優先序\n商業司 > 財稅 > 104 > 工廠"]
+    L --> M{"仍有衝突？"}
+    M -->|否| N["✅ 採最高優先序來源"]
+    M -->|是| O["🤖 語意模型\n最終回退"]
+    O --> P["✅ 統一行業代號"]
+    H & I & J & K & N --> P
+    style O fill:#0891b2,color:#fff
+    style P fill:#059669,color:#fff
+    </div>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-left"><div class="step-num">1</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>四大來源資料彙整</h4>
+        <p>從 104、商業司、工廠登記、財稅資料庫各自取得公司的行業描述或代號，對應到統一的行業大中小細類表。</p>
+        <div class="step-detail">每個來源都有獨立的對照表（104對照表、商業司對照表、工廠對照表、財稅對照表），統一轉換為標準行業代號</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-left"><div class="step-num">2</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>直接命中判定</h4>
+        <p>若公司自填的行業類別已完全符合行業定義，直接採用，不需進入後續判斷流程，速度最快且最準確。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-left"><div class="step-num">3</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>關鍵字規則判定</h4>
+        <p>依產品說明或公司名稱的關鍵字，套用規則直接判定行業大類。</p>
+        <div class="step-detail">
+          製造 / 組裝 / 研發 → <strong>C 製造業</strong><br>
+          流通 / 買賣 / 批發 / 零售 / 貿易 → <strong>F 批發及零售業</strong><br>
+          無店面 / 電商 → <strong>F48 無店面零售業</strong><br>
+          公會 / 協會 / 基金會 → <strong>O94 職業及類似組織</strong><br>
+          醫院 → <strong>M8110</strong>・診所 → <strong>M8140</strong>・長照機構 → <strong>M8130</strong>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-left"><div class="step-num">4</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>來源優先序仲裁</h4>
+        <p>若規則無法直接判定，且多個來源給出不同結果，依可信度優先序自動選擇最合適的來源。</p>
+        <div class="step-detail">商業司（公司正式登記）> 財稅（申報資料）> 104（公開求才）> 工廠登記</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-left"><div class="step-num">5</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>語意模型回退</h4>
+        <p>仍有疑義時，以語意模型分析公司描述文字，輸出最符合的行業代號，確保所有法人都有有效分類。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">Engineering Challenges · System 2</div>
+  <h2>產行業系統的技術難題</h2>
+  <div class="challenge-grid">
+    <div class="challenge-item">
+      <div class="ch-label">Challenge 1</div>
+      <h4>四個來源的行業碼體系完全不同</h4>
+      <p>104 用自訂職能分類、商業司用公司法行業、財稅用稅務行業碼、工廠用工廠行業碼，四套體系互不相通。</p>
+      <div class="arrow">↓ 解決方案</div>
+      <p class="solution">為每個來源建立獨立對照表，統一映射到標準行業分類（主計處第 11 版）；對照表以 Excel 維護，可持續更新</p>
+    </div>
+    <div class="challenge-item">
+      <div class="ch-label">Challenge 2</div>
+      <h4>關鍵字規則的邊界案例</h4>
+      <p>「國際貿易」公司的主要產品是「組裝服務」，關鍵字同時命中 C（製造）和 F（流通），產生衝突。</p>
+      <div class="arrow">↓ 解決方案</div>
+      <p class="solution">規則設計加入優先序：產品說明關鍵字優先於公司名稱關鍵字；細類規則優先於大類規則；無店面/電商優先於一般零售</p>
+    </div>
+    <div class="challenge-item">
+      <div class="ch-label">Challenge 3</div>
+      <h4>行業層級的部分匹配問題</h4>
+      <p>某來源只提供大類（C），另一來源提供細類（C1011）。直接比較會誤判為衝突，其實大類是相容的。</p>
+      <div class="arrow">↓ 解決方案</div>
+      <p class="solution">比對時先對齊到相同層級再判斷一致性；採用細類的來源優先於只有大類的來源，資訊越完整越可信</p>
+    </div>
+    <div class="challenge-item">
+      <div class="ch-label">Challenge 4</div>
+      <h4>行業定義隨法規更新</h4>
+      <p>主計處行業分類定期修訂（目前第 11 版），舊代號可能被合併、拆分或更名，歷史資料需要維護。</p>
+      <div class="arrow">↓ 解決方案</div>
+      <p class="solution">對照表版本化管理，新舊代號保留映射關係；定期比對各來源更新情況，確保對照表與最新版本同步</p>
+    </div>
+  </div>
+</section>
+
 <section>
   <div class="section-label">Tech Stack</div>
   <h2>技術選型</h2>
@@ -281,8 +434,8 @@ flowchart TD
 
 </main>
 <footer>
-  <p>內容自動標籤系統 &nbsp;|&nbsp; Built with Python + Gemini AI + FastAPI &nbsp;|&nbsp; <a href="https://github.com/yujuigato/content-auto-labeling">GitHub</a></p>
-  <p style="margin-top:6px;">最後更新：2026-06-12</p>
+  <p>AI 自動標籤系統（內容標籤 + 法人產行業標籤）&nbsp;|&nbsp; Python · Gemini AI · FastAPI &nbsp;|&nbsp; <a href="https://github.com/yujuigato/content-auto-labeling">GitHub</a></p>
+  <p style="margin-top:6px;">最後更新：2026-06-15</p>
 </footer>
 <script>mermaid.initialize({startOnLoad:true,theme:'base',themeVariables:{primaryColor:'#cffafe',primaryTextColor:'#164e63',primaryBorderColor:'#67e8f9',lineColor:'#64748b'},flowchart:{curve:'monotoneX'}});</script>
 </body>
