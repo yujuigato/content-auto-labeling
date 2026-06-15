@@ -73,7 +73,29 @@
     .tech-desc{font-size:.8rem;color:var(--text-muted);}
     footer{text-align:center;padding:40px 24px;color:var(--text-muted);font-size:.85rem;border-top:1px solid var(--border);}
     footer a{color:var(--primary);text-decoration:none;}
-  </style>
+  
+  @media(max-width:640px){
+    header{padding:48px 20px 36px;}
+    header h1{font-size:1.7rem;}
+    header .subtitle{font-size:.92rem;}
+    .hero-stats{gap:16px;}
+    .hero-stat .num{font-size:1.5rem;}
+    .tech-pill{font-size:.75rem;padding:4px 10px;}
+    .tech-pills{gap:6px;}
+    main{padding:32px 16px;}
+    h2{font-size:1.3rem;}
+    .card-grid,.challenge-grid,.tech-grid{grid-template-columns:1fr;}
+    .stat-grid{grid-template-columns:repeat(2,1fr);}
+    .score-grid{grid-template-columns:repeat(2,1fr);}
+    table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    .mermaid{overflow-x:auto;}
+    .step{gap:12px;}
+    .step-num{width:30px;height:30px;font-size:.8rem;}
+    .l7-grid{grid-template-columns:1fr;}
+    .output-grid{grid-template-columns:1fr;}
+    .system-badge{font-size:.72rem;padding:3px 10px;}
+  }
+</style>
 </head>
 <body>
 <header>
