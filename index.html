@@ -169,6 +169,10 @@
     <h4>為什麼是「混合式」，不是純 LLM？</h4>
     <p style="font-size:.92rem;color:#374151;margin-top:6px;">產品標籤需要精確比對內部產品代碼（不能有 LLM 自創的標籤），用關鍵字 + 同義詞字典可以確保 100% 合法性。場景與議題需要語意理解，這正是 LLM 的強項。兩者分工，各取所長。</p>
   </div>
+  <div class="highlight-box" style="margin-top:14px;">
+    <h4>三種呼叫方式，共用同一套分類邏輯</h4>
+    <p style="font-size:.92rem;color:#374151;margin-top:6px;">分類核心獨立於呼叫介面之外：即時請求走 <strong>FastAPI</strong>；離線批次資料（不透過 HTTP）用<strong>批次來源 Adapter</strong> 直接呼叫，不需要另外啟動服務；也支援以 <strong>Google ADK（Agent Development Kit）</strong>獨立 agent 型態運作。三者互不影響，各自維護自己的知識庫連線。</p>
+  </div>
   <div class="card" style="margin-bottom:24px;">
     <div class="mermaid">
 flowchart TD
@@ -460,13 +464,14 @@ flowchart TD
     <div class="tech-item"><div class="tech-icon">🗄️</div><div><div class="tech-name">MySQL + SQL Server</div><div class="tech-desc">文章來源 + 知識庫標籤同步</div></div></div>
     <div class="tech-item"><div class="tech-icon">📖</div><div><div class="tech-name">同義詞字典（Excel）</div><div class="tech-desc">非技術人員可維護，啟動自動載入</div></div></div>
     <div class="tech-item"><div class="tech-icon">☁️</div><div><div class="tech-name">Vertex AI</div><div class="tech-desc">Gemini API 呼叫平台</div></div></div>
+    <div class="tech-item"><div class="tech-icon">🧩</div><div><div class="tech-name">Google ADK</div><div class="tech-desc">獨立 agent 型態運作，與 API 共用分類核心</div></div></div>
   </div>
 </section>
 
 </main>
 <footer>
   <p>AI 自動標籤系統（內容標籤 + 法人產行業標籤）&nbsp;|&nbsp; Python · Gemini AI · FastAPI &nbsp;|&nbsp; <a href="https://github.com/yujuigato/content-auto-labeling">GitHub</a></p>
-  <p style="margin-top:6px;">最後更新：2026-06-15</p>
+  <p style="margin-top:6px;">最後更新：2026-08-20</p>
 </footer>
 <script>mermaid.initialize({startOnLoad:true,theme:'base',themeVariables:{primaryColor:'#cffafe',primaryTextColor:'#164e63',primaryBorderColor:'#67e8f9',lineColor:'#64748b'},flowchart:{curve:'monotoneX'}});</script>
 </body>
