@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>法人產行業標籤系統｜Industry Classification</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    :root{--primary:#0891b2;--primary-light:#ecfeff;--success:#059669;--warning:#d97706;--danger:#dc2626;--bg:#f8fafc;--card:#ffffff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b;--text-light:#94a3b8;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;}
+    header{background:linear-gradient(135deg,#0e7490 0%,#0891b2 50%,#7c3aed 100%);color:white;padding:72px 40px 56px;text-align:center;position:relative;overflow:hidden;}
+    header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
+    .hero-tag{display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:5px 16px;font-size:.85rem;letter-spacing:.05em;margin-bottom:16px;}
+    header h1{font-size:2.4rem;font-weight:800;margin-bottom:16px;line-height:1.2;}
+    header h1 span{color:#a5f3fc;}
+    header .subtitle{font-size:1.1rem;opacity:.85;max-width:640px;margin:0 auto 28px;}
+    .tech-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:32px;}
+    .tech-pill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:6px 16px;font-size:.85rem;font-weight:500;}
+    .hero-stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;padding-top:24px;border-top:1px solid rgba(255,255,255,0.2);}
+    .hero-stat .num{font-size:2rem;font-weight:800;}
+    .hero-stat .lbl{font-size:.8rem;opacity:.75;margin-top:2px;}
+    main{max-width:960px;margin:0 auto;padding:48px 24px;}
+    section{margin-bottom:56px;}
+    .section-label{font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);margin-bottom:8px;}
+    h2{font-size:1.65rem;font-weight:800;color:var(--text);margin-bottom:8px;line-height:1.3;}
+    .section-desc{font-size:1rem;color:var(--text-muted);margin-bottom:24px;max-width:680px;}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+    .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+    .problem-card{border-left:4px solid var(--danger);background:#fff5f5;}
+    .solution-card{border-left:4px solid var(--success);background:#f0fdf4;}
+    .problem-card h3{color:var(--danger);}
+    .solution-card h3{color:var(--success);}
+    h3{font-size:1.05rem;font-weight:700;margin:20px 0 8px;}
+    .steps{display:flex;flex-direction:column;}
+    .step{display:flex;gap:20px;padding:20px 0;border-bottom:1px solid var(--border);}
+    .step:last-child{border-bottom:none;}
+    .step-left{display:flex;flex-direction:column;align-items:center;min-width:40px;}
+    .step-num{width:36px;height:36px;background:var(--primary);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0;}
+    .step-line{width:2px;background:var(--border);flex:1;min-height:20px;margin-top:6px;}
+    .step:last-child .step-line{display:none;}
+    .step-body h4{font-weight:700;font-size:1rem;margin-bottom:4px;}
+    .step-body p{font-size:.9rem;color:var(--text-muted);}
+    .step-detail{background:#f8fafc;border-radius:8px;padding:10px 14px;font-size:.85rem;color:#475569;margin-top:8px;border:1px solid var(--border);}
+    .mermaid{background:white;border-radius:10px;padding:20px;margin:12px 0;overflow-x:auto;}
+    .challenge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;}
+    .challenge-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;}
+    .challenge-item .ch-label{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--warning);margin-bottom:6px;}
+    .challenge-item h4{font-weight:700;font-size:.95rem;margin-bottom:6px;}
+    .challenge-item p{font-size:.87rem;color:var(--text-muted);}
+    .arrow{text-align:center;font-size:1.2rem;color:var(--success);margin:4px 0;}
+    .challenge-item .solution{font-size:.87rem;color:var(--success);font-weight:600;}
+    .highlight-box{background:linear-gradient(135deg,#ecfeff,#f5f3ff);border:1px solid #67e8f9;border-radius:12px;padding:20px 24px;margin:16px 0;}
+    .highlight-box h4{font-weight:700;color:var(--primary);margin-bottom:8px;}
+    .tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+    .tech-item{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+    .tech-icon{font-size:1.5rem;flex-shrink:0;}
+    .tech-name{font-weight:700;font-size:.9rem;}
+    .tech-desc{font-size:.8rem;color:var(--text-muted);}
+    footer{text-align:center;padding:40px 24px;color:var(--text-muted);font-size:.85rem;border-top:1px solid var(--border);}
+    footer a{color:var(--primary);text-decoration:none;}
+    .site-nav{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:10px 20px;background:#fff;border-bottom:1px solid var(--border);font-size:.82rem;}
+    .site-nav a{color:var(--text-muted);text-decoration:none;padding:6px 12px;border-radius:8px;transition:.15s;}
+    .site-nav a:hover{background:#f1f5f9;color:var(--text);}
+    .site-nav a.active{background:var(--primary-light);color:var(--primary);font-weight:700;}
+
+  @media(max-width:640px){
+    header{padding:48px 20px 36px;}
+    header h1{font-size:1.7rem;}
+    header .subtitle{font-size:.92rem;}
+    .hero-stats{gap:16px;}
+    .hero-stat .num{font-size:1.5rem;}
+    .tech-pill{font-size:.75rem;padding:4px 10px;}
+    .tech-pills{gap:6px;}
+    main{padding:32px 16px;}
+    h2{font-size:1.3rem;}
+    .card-grid,.challenge-grid,.tech-grid{grid-template-columns:1fr;}
+    .mermaid{overflow-x:auto;}
+    .step{gap:12px;}
+    .step-num{width:30px;height:30px;font-size:.8rem;}
+  }
+  .corner-link{
+    position:fixed; top:14px; right:16px; z-index:60;
+    font-size:.78rem; font-weight:700; color:#fff; text-decoration:none;
+    padding:6px 14px; border-radius:99px; background:rgba(15,23,42,0.75);
+    border:1px solid rgba(255,255,255,0.25); backdrop-filter:blur(4px);
+    transition:background .15s;
+  }
+  .corner-link:hover{ background:rgba(15,23,42,0.92); }
+</style>
+</head>
+<body>
+<a href="https://yujuigato.github.io/" class="corner-link">🔗 作品集首頁</a>
+<nav class="site-nav">
+  <a href="../">🏷️ 內容自動標籤</a>
+  <a href="./" class="active">🏢 法人產行業標籤</a>
+</nav>
+<header>
+  <div class="hero-tag">🏢 多來源整合 × 規則優先 × 語意回退 × 自動判定</div>
+  <h1>法人產行業標籤系統<br><span>Industry Classification</span></h1>
+  <p class="subtitle">整合 104、商業司、工廠登記、財稅四大來源，自動判定企業行業代號，規則優先、語意模型回退，確保每家公司都有有效分類</p>
+  <div class="tech-pills">
+    <span class="tech-pill">Python</span>
+    <span class="tech-pill">Gemini AI</span>
+    <span class="tech-pill">規則引擎</span>
+    <span class="tech-pill">4 大資料來源整合</span>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">4 來源</div><div class="lbl">104/商業司/工廠登記/財稅</div></div>
+    <div class="hero-stat"><div class="num">規則 + 語意</div><div class="lbl">雙軌判定，語意模型兜底</div></div>
+    <div class="hero-stat"><div class="num">100%</div><div class="lbl">法人皆有有效分類</div></div>
+    <div class="hero-stat"><div class="num">四層</div><div class="lbl">大類/中類/小類/細類</div></div>
+  </div>
+</header>
+<main>
+
+<section>
+  <div class="section-label">Background</div>
+  <h2>法人產行業標籤系統在解決什麼問題？</h2>
+  <p class="section-desc">企業資料散落在 104、商業司、工廠登記、財稅等四個政府與商業資料庫，每個來源的行業分類系統都不一樣，無法直接比較或合併。</p>
+  <div class="card-grid">
+    <div class="card problem-card">
+      <h3>😣 過去的痛點</h3>
+      <ul style="padding-left:18px;font-size:.92rem;color:#374151;margin-top:8px;">
+        <li style="margin-bottom:8px">同一家公司，四個來源給的行業代號完全不同，不知道哪個準</li>
+        <li style="margin-bottom:8px">大中小細類層級複雜，人工對照費時且容易出錯</li>
+        <li style="margin-bottom:8px">公司名稱含「製造」卻被分在服務業的錯誤分類持續累積</li>
+        <li>新增法人時需要人工查表判定行業，無法規模化</li>
+      </ul>
+    </div>
+    <div class="card solution-card">
+      <h3>✅ 系統如何解決</h3>
+      <ul style="padding-left:18px;font-size:.92rem;color:#374151;margin-top:8px;">
+        <li style="margin-bottom:8px">整合四大來源，建立統一的行業代號判定流程</li>
+        <li style="margin-bottom:8px">關鍵字規則優先：製造/組裝→C，流通/批發→F，醫院→M8110</li>
+        <li style="margin-bottom:8px">規則覆蓋不到的案例，依來源優先序自動選擇最可信的代號</li>
+        <li>最終回退到語意模型，確保每家公司都有有效的分類</li>
+      </ul>
+    </div>
+  </div>
+  <div class="highlight-box" style="margin-top:16px;">
+    <h4>💡 什麼是產行業代號？</h4>
+    <p style="font-size:.92rem;color:#374151;margin-top:6px;">台灣行業標準分類採四層結構：<strong>大類（英文字母）→ 中類（2碼）→ 小類（3碼）→ 細類（4碼）</strong>。例如：<br>
+    C → C10 → C101 → C1011（食品製造業 → 屠宰及肉品加工）<br>
+    業務可依行業代號快速找出同類型客戶，複製成功銷售策略。</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">How It Works</div>
+  <h2>產行業判定流程</h2>
+  <div class="card" style="margin-bottom:24px;">
+    <div class="mermaid">
+flowchart TD
+    A["104 求才資料\n產品說明/行業"] --> E["資料彙整"]
+    B["商業司\n公司登記行業"] --> E
+    C["工廠登記\n主要產品"] --> E
+    D["財稅資料\n稅務行業碼"] --> E
+    E --> F{"直接命中？\n公司自填 = 行業定義"}
+    F -->|是| K["✅ 直接判定\n不需模型"]
+    F -->|否| G{"關鍵字規則"}
+    G -->|製造/組裝/研發| H["C 製造業"]
+    G -->|批發/零售/貿易| I["F 批發零售業"]
+    G -->|醫院/診所/長照| J["M 醫療保健"]
+    G -->|無法判定| L["來源優先序\n商業司 > 財稅 > 104 > 工廠"]
+    L --> M{"仍有衝突？"}
+    M -->|否| N["✅ 採最高優先序來源"]
+    M -->|是| O["🤖 語意模型\n最終回退"]
+    O --> P["✅ 統一行業代號"]
+    H & I & J & K & N --> P
+    style O fill:#0891b2,color:#fff
+    style P fill:#059669,color:#fff
+    </div>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-left"><div class="step-num">1</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>四大來源資料彙整</h4>
+        <p>從 104、商業司、工廠登記、財稅資料庫各自取得公司的行業描述或代號，對應到統一的行業大中小細類表。</p>
+        <div class="step-detail">每個來源都有獨立的對照表（104對照表、商業司對照表、工廠對照表、財稅對照表），統一轉換為標準行業代號</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-left"><div class="step-num">2</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>直接命中判定</h4>
+        <p>若公司自填的行業類別已完全符合行業定義，直接採用，不需進入後續判斷流程，速度最快且最準確。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-left"><div class="step-num">3</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>關鍵字規則判定</h4>
+        <p>依產品說明或公司名稱的關鍵字，套用規則直接判定行業大類。</p>
+        <div class="step-detail">
+          製造 / 組裝 / 研發 → <strong>C 製造業</strong><br>
+          流通 / 買賣 / 批發 / 零售 / 貿易 → <strong>F 批發及零售業</strong><br>
+          無店面 / 電商 → <strong>F48 無店面零售業</strong><br>
+          公會 / 協會 / 基金會 → <strong>O94 職業及類似組織</strong><br>
+          醫院 → <strong>M8110</strong>・診所 → <strong>M8140</strong>・長照機構 → <strong>M8130</strong>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-left"><div class="step-num">4</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>來源優先序仲裁</h4>
+        <p>若規則無法直接判定，且多個來源給出不同結果，依可信度優先序自動選擇最合適的來源。</p>
+        <div class="step-detail">商業司（公司正式登記）> 財稅（申報資料）> 104（公開求才）> 工廠登記</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-left"><div class="step-num">5</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <h4>語意模型回退</h4>
+        <p>仍有疑義時，以語意模型分析公司描述文字，輸出最符合的行業代號，確保所有法人都有有效分類。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">Engineering Challenges</div>
+  <h2>解決了哪些技術難題？</h2>
+  <div class="challenge-grid">
+    <div class="challenge-item">
+      <div class="ch-label">Challenge 1</div>
+      <h4>四個來源的行業碼體系完全不同</h4>
+      <p>104 用自訂職能分類、商業司用公司法行業、財稅用稅務行業碼、工廠用工廠行業碼，四套體系互不相通。</p>
+      <div class="arrow">↓ 解決方案</div>
+      <p class="solution">為每個來源建立獨立對照表，統一映射到標準行業分類（主計處第 11 版）；對照表以 Excel 維護，可持續更新</p>
+    </div>
+    <div class="challenge-item">
+      <div class="ch-label">Challenge 2</div>
+      <h4>關鍵字規則的邊界案例</h4>
+      <p>「國際貿易」公司的主要產品是「組裝服務」，關鍵字同時命中 C（製造）和 F（流通），產生衝突。</p>
+      <div class="arrow">↓ 解決方案</div>
+      <p class="solution">規則設計加入優先序：產品說明關鍵字優先於公司名稱關鍵字；細類規則優先於大類規則；無店面/電商優先於一般零售</p>
+    </div>
+    <div class="challenge-item">
+      <div class="ch-label">Challenge 3</div>
+      <h4>行業層級的部分匹配問題</h4>
+      <p>某來源只提供大類（C），另一來源提供細類（C1011）。直接比較會誤判為衝突，其實大類是相容的。</p>
+      <div class="arrow">↓ 解決方案</div>
+      <p class="solution">比對時先對齊到相同層級再判斷一致性；採用細類的來源優先於只有大類的來源，資訊越完整越可信</p>
+    </div>
+    <div class="challenge-item">
+      <div class="ch-label">Challenge 4</div>
+      <h4>行業定義隨法規更新</h4>
+      <p>主計處行業分類定期修訂（目前第 11 版），舊代號可能被合併、拆分或更名，歷史資料需要維護。</p>
+      <div class="arrow">↓ 解決方案</div>
+      <p class="solution">對照表版本化管理，新舊代號保留映射關係；定期比對各來源更新情況，確保對照表與最新版本同步</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">Tech Stack</div>
+  <h2>技術選型</h2>
+  <div class="tech-grid">
+    <div class="tech-item"><div class="tech-icon">🤖</div><div><div class="tech-name">Gemini AI</div><div class="tech-desc">語意模型最終回退，處理規則無法判定的案例</div></div></div>
+    <div class="tech-item"><div class="tech-icon">🔀</div><div><div class="tech-name">規則引擎</div><div class="tech-desc">關鍵字規則 + 來源優先序仲裁</div></div></div>
+    <div class="tech-item"><div class="tech-icon">📊</div><div><div class="tech-name">對照表（Excel）</div><div class="tech-desc">四大來源各自獨立維護，版本化管理</div></div></div>
+    <div class="tech-item"><div class="tech-icon">🐍</div><div><div class="tech-name">Python</div><div class="tech-desc">資料彙整、規則判定、來源仲裁邏輯</div></div></div>
+  </div>
+</section>
+
+<div class="card" style="text-align:center;background:linear-gradient(135deg,#ecfeff,#f5f3ff);border:1px solid #67e8f9;">
+  <p style="font-size:.95rem;color:#374151;">另一套互補系統：<strong>內容自動標籤系統</strong>，為中文文章打上六大維度標籤</p>
+  <a href="../" style="display:inline-block;margin-top:10px;color:var(--primary);font-weight:700;text-decoration:none;">🏷️ 查看內容自動標籤系統 →</a>
+</div>
+
+</main>
+<footer>
+  <p>法人產行業標籤系統 &nbsp;|&nbsp; Python · Gemini AI &nbsp;|&nbsp; <a href="https://github.com/yujuigato/content-auto-labeling">GitHub</a></p>
+  <p style="margin-top:6px;">最後更新：2026-08-20</p>
+</footer>
+<script>mermaid.initialize({startOnLoad:true,theme:'base',themeVariables:{primaryColor:'#cffafe',primaryTextColor:'#164e63',primaryBorderColor:'#67e8f9',lineColor:'#64748b'},flowchart:{curve:'monotoneX'}});</script>
+</body>
+</html>

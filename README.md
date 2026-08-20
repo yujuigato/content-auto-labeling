@@ -1,4 +1,15 @@
-# 內容自動標籤系統 — AI Content Auto-Labeling
+# AI 自動標籤系統 — Auto-Labeling Suite
+
+兩套互補的自動分類系統，分別以獨立頁面呈現：
+
+| 系統 | 說明 | 頁面 |
+|---|---|---|
+| 內容自動標籤 | 對中文文章打上場景/議題/產品/產業/職能/階段六大維度標籤 | [查看](https://yujuigato.github.io/content-auto-labeling/) |
+| 法人產行業標籤 | 整合四大來源自動判定企業行業代號 | [查看](https://yujuigato.github.io/content-auto-labeling/industry-labeling/) |
+
+---
+
+## 內容自動標籤系統
 
 結合 **Gemini LLM 語意判斷**、**關鍵字精確比對**與**純規則推導**，對中文文章自動打上場景、議題、產品、產業、職能、階段六大維度標籤，並透過 FastAPI 提供即時分類服務。
 
@@ -23,9 +34,15 @@
 
 Python · Gemini 2.0/2.5 Flash · Vertex AI · FastAPI · Google ADK · BeautifulSoup · MySQL · SQL Server
 
-## 🌐 作品集頁面
-
 詳細說明請見：**[https://yujuigato.github.io/content-auto-labeling/](https://yujuigato.github.io/content-auto-labeling/)**
+
+---
+
+## 法人產行業標籤系統
+
+整合 104、商業司、工廠登記、財稅四大資料來源，自動判定企業的行業代號（台灣行業標準分類：大類→中類→小類→細類）。判定流程採規則優先、語意模型回退：公司自填資料直接命中即採用；否則套用關鍵字規則（如「製造/組裝」→ C 製造業）；規則無法判定時依來源可信度優先序仲裁；仍有疑義才交給語意模型，確保每家公司都有有效分類。
+
+詳細說明請見：**[https://yujuigato.github.io/content-auto-labeling/industry-labeling/](https://yujuigato.github.io/content-auto-labeling/industry-labeling/)**
 
 ---
 
