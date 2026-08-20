@@ -95,9 +95,18 @@
     .output-grid{grid-template-columns:1fr;}
     .system-badge{font-size:.72rem;padding:3px 10px;}
   }
+  .corner-link{
+    position:fixed; top:14px; right:16px; z-index:60;
+    font-size:.78rem; font-weight:700; color:#fff; text-decoration:none;
+    padding:6px 14px; border-radius:99px; background:rgba(15,23,42,0.75);
+    border:1px solid rgba(255,255,255,0.25); backdrop-filter:blur(4px);
+    transition:background .15s;
+  }
+  .corner-link:hover{ background:rgba(15,23,42,0.92); }
 </style>
 </head>
 <body>
+<a href="https://yujuigato.github.io/" class="corner-link">🔗 作品集首頁</a>
 <header>
   <div class="hero-tag">🏷️ LLM × 關鍵字規則 × 多來源整合 × 自動分類</div>
   <h1>AI 自動標籤系統<br><span>Auto-Labeling Suite</span></h1>
